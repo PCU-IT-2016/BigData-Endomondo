@@ -1,5 +1,6 @@
-package process;
+package process.preprocessing;
 
+import com.sun.corba.se.spi.orbutil.threadpool.Work;
 import org.apache.commons.io.FileUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -14,29 +15,39 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import process.analysis.UniqueSportCountProcess;
 import process.utils.Workout;
 
 import java.io.File;
 import java.io.IOException;
 
-public class NearestNeighborsProcess {
+public class CleanFeatureProcess {
 
-    public class TokenizerMapper extends Mapper<Object, Text, Text, NullWritable> {
+    public static class TokenizerMapper extends Mapper<Object, Text, Text, NullWritable> {
 
         private Text outputKey = new Text();
-        private NullWritable nullWritable = NullWritable.get();
+        private NullWritable out = NullWritable.get();
         private JSONParser parser = new JSONParser();
 
         public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
-            context.write(outputKey, nullWritable);
+            String val = value.toString().replace("'", "\"");
+            try {
+                Workout wo = new Workout();
+                wo.decode((JSONObject) parser.parse(val));
+                outputKey.set(wo.toJson().toJSONString());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            context.write(outputKey, out);
         }
     }
 
-    public class NearestNeighborsReducer extends Reducer<Text,IntWritable,Text,NullWritable> {
+    public static class CleanFeatureReducer extends Reducer<Text,IntWritable,Text,NullWritable> {
         private Text result = new Text();
         private NullWritable out = NullWritable.get();
 
-        public void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
+        public void reduce(Text key, Iterable<NullWritable> values, Context context) throws IOException, InterruptedException {
+            result.set(key.toString());
             context.write(result, out);
         }
     }
@@ -52,12 +63,12 @@ public class NearestNeighborsProcess {
 
         Configuration conf = new Configuration();
 
-        Job job = Job.getInstance(conf, "Nearest Neighbors");
+        Job job = Job.getInstance(conf, "Count Gender");
 
-        job.setJarByClass(NearestNeighborsProcess.class);
+        job.setJarByClass(CleanFeatureProcess.class);
 
-        job.setMapperClass(NearestNeighborsProcess.TokenizerMapper.class);
-        job.setReducerClass(NearestNeighborsProcess.NearestNeighborsReducer.class);
+        job.setMapperClass(CleanFeatureProcess.TokenizerMapper.class);
+        job.setReducerClass(CleanFeatureProcess.CleanFeatureReducer.class);
 
         // MAPPER KEY & VALUE CLASS
         job.setOutputKeyClass(Text.class);
@@ -67,6 +78,5 @@ public class NearestNeighborsProcess {
         FileOutputFormat.setOutputPath(job, new Path(outputPath));
 
         job.waitForCompletion(true);
-
     }
 }
