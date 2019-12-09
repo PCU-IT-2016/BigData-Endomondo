@@ -1,5 +1,6 @@
 package process;
 
-public class KMeansProcess {
+public class KMeansProcess
+{
 
 }
