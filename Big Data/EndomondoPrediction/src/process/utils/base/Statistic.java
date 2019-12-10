@@ -50,4 +50,5 @@ public class Statistic {
     public static float mean(JSONArray numbers) {
         return sum(numbers) / numbers.size();
     }
+
 }
