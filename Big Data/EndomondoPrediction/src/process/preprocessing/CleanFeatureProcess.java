@@ -1,6 +1,6 @@
 package process.preprocessing;
 
-import com.sun.corba.se.spi.orbutil.threadpool.Work;
+import com.google.gson.JsonArray;
 import org.apache.commons.io.FileUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -12,10 +12,10 @@ import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import process.analysis.UniqueSportCountProcess;
 import process.utils.Workout;
 
 import java.io.File;
@@ -30,11 +30,17 @@ public class CleanFeatureProcess {
         private JSONParser parser = new JSONParser();
 
         public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
+
             String val = value.toString().replace("'", "\"");
+
             try {
                 Workout wo = new Workout();
-                wo.decode((JSONObject) parser.parse(val));
+                JSONObject temp = (JSONObject) parser.parse(val);
+
+                wo.decode(temp);
+
                 outputKey.set(wo.toJson().toJSONString());
+
             } catch (ParseException e) {
                 e.printStackTrace();
             }

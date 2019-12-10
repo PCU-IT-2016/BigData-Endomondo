@@ -2,11 +2,9 @@ package process.utils;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+import process.utils.base.Metrics;
 import process.utils.base.Resource;
 import process.utils.base.Statistic;
-
-import java.util.Arrays;
 
 public class Workout implements Resource
 {
@@ -16,17 +14,12 @@ public class Workout implements Resource
     private String gender;
     private String url;
 
-//    private JSONArray longitude;
-//    private JSONArray latitude;
-//    private double[] altitude;
-//    private JSONArray heartRate;
-//    private long[] timestamp;
-//    private JSONArray speed;
-
     private float averageHeartRate;
     private float averageSpeed;
     private float averageLatitude;
     private float averageLongitude;
+    private float averageAltitude;
+    private float distance;
 
     public Workout()
     {
@@ -35,13 +28,6 @@ public class Workout implements Resource
         this.sport = "";
         this.gender = "";
         this.url = "";
-
-//        this.longitude = new double[1];
-//        this.latitude = new double[1];
-//        this.altitude = new double[1];
-//        this.heartRate = new int[1];
-//        this.timestamp = new long[1];
-//        this.speed = new double[1];
     }
 
     public long getId() {
@@ -80,6 +66,11 @@ public class Workout implements Resource
         return url;
     }
 
+    public float getDistance()
+    {
+        return this.distance;
+    }
+
     @Override
     public String toString() {
         return "process.utils.Workout{" +
@@ -88,50 +79,18 @@ public class Workout implements Resource
                 ", sport='" + sport + '\'' +
                 ", gender='" + gender + '\'' +
                 ", url='" + url + '\'' +
-//                ", longitude=" + longitude.toString() +
-//                ", latitude=" + latitude.toString() +
-//                ", altitude=" + Arrays.toString(altitude) +
-//                ", heartRate=" + heartRate.toString() +
+                ", longitude=" + this.averageLongitude +
+                ", latitude=" + this.averageLatitude +
+                ", altitude=" + this.averageAltitude +
+                ", heartRate=" + this.averageHeartRate +
 //                ", timestamp=" + Arrays.toString(timestamp) +
-//                ", speed=" + speed.toString() +
+                ", speed=" + this.averageSpeed +
                 '}';
     }
 
     public void setUrl(String url) {
         this.url = url;
     }
-
-//    public double[] getLongitude() {
-//        return longitude;
-//    }
-//
-//    public void setLongitude(double[] longitude) {
-//        this.longitude = longitude;
-//    }
-//
-//    public double[] getLatitude() {
-//        return latitude;
-//    }
-//
-//    public void setLatitude(double[] latitude) {
-//        this.latitude = latitude;
-//    }
-
-//    public double[] getAltitude() {
-//        return altitude;
-//    }
-//
-//    public void setAltitude(double[] altitude) {
-//        this.altitude = altitude;
-//    }
-//
-//    public long[] getTimestamp() {
-//        return timestamp;
-//    }
-//
-//    public void setTimestamp(long[] timestamp) {
-//        this.timestamp = timestamp;
-//    }
 
     public float getAverageHeartRate() {
         return averageHeartRate;
@@ -157,6 +116,8 @@ public class Workout implements Resource
 
         this.setGender((String) obj.get("gender"));
 
+        this.setSport((String) obj.get("sport"));
+
         this.averageHeartRate = Statistic.mean((JSONArray) obj.get("heart_rate"));
 
         JSONArray speed = (JSONArray) obj.get("speed");
@@ -167,13 +128,13 @@ public class Workout implements Resource
             this.averageSpeed = 0;
         }
 
-        this.setSport((String) obj.get("sport"));
-
-//        this.latitude = (JSONArray) obj.get("latitude");
         this.averageLatitude = Statistic.mean((JSONArray) obj.get("latitude"));
 
-//        this.longitude = (JSONArray) obj.get("longitude");
         this.averageLongitude = Statistic.mean((JSONArray) obj.get("longitude"));
+
+        this.averageAltitude = Statistic.mean((JSONArray) obj.get("altitude"));
+
+        this.distance = Metrics.euclideanDistance((JSONArray) obj.get("longitude"), (JSONArray) obj.get("latitude"));
     }
 
     @Override
@@ -183,7 +144,8 @@ public class Workout implements Resource
                          String.valueOf(this.averageHeartRate) + "," +
                          String.valueOf(this.averageSpeed) + "," +
                          String.valueOf(this.averageLatitude) + "," +
-                         String.valueOf(this.averageLongitude);
+                         String.valueOf(this.averageLongitude) + "," +
+                         String.valueOf(this.averageAltitude);
         return encoded;
     }
 
@@ -194,8 +156,9 @@ public class Workout implements Resource
         jsonObject.put("userId", this.userId);
         jsonObject.put("gender", this.gender);
         jsonObject.put("sport", this.sport);
-        jsonObject.put("lat", this.averageLatitude);
-        jsonObject.put("lon", this.averageLongitude);
+        jsonObject.put("latitude", this.averageLatitude);
+        jsonObject.put("longitude", this.averageLongitude);
+        jsonObject.put("altitude", this.averageAltitude);
         jsonObject.put("heart_rate", this.averageHeartRate);
         jsonObject.put("speed", this.averageSpeed);
         return jsonObject;
