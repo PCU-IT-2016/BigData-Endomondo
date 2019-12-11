@@ -20,6 +20,8 @@ public class Workout implements Resource
     private float averageLongitude;
     private float averageAltitude;
     private float distance;
+    private float calories;
+    private float duration;
 
     public Workout()
     {
@@ -134,7 +136,25 @@ public class Workout implements Resource
 
         this.averageAltitude = Statistic.mean((JSONArray) obj.get("altitude"));
 
-        this.distance = Metrics.euclideanDistance((JSONArray) obj.get("longitude"), (JSONArray) obj.get("latitude"));
+        try {
+            this.distance = ((Double) obj.get("distance")).floatValue();
+        } catch (Exception e) {
+            this.distance = 0; //Metrics.euclideanDistance((JSONArray) obj.get("longitude"), (JSONArray) obj.get("latitude"));
+        }
+
+        try {
+            this.calories = ((Double) obj.get("calories")).floatValue();
+        } catch(Exception e) {
+            this.calories = 0;
+            // e.printStackTrace();
+        }
+
+        try {
+            this.duration = ((Double) obj.get("duration")).floatValue();
+        } catch (Exception e) {
+            this.duration = 0;
+            // e.printStackTrace();
+        }
     }
 
     @Override
@@ -161,6 +181,8 @@ public class Workout implements Resource
         jsonObject.put("altitude", this.averageAltitude);
         jsonObject.put("heart_rate", this.averageHeartRate);
         jsonObject.put("speed", this.averageSpeed);
+        jsonObject.put("calories", this.calories);
+        jsonObject.put("duration", this.duration);
         return jsonObject;
     }
 }

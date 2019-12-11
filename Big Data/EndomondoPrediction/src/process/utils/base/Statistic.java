@@ -26,6 +26,9 @@ public class Statistic {
      * @return
      */
     public static float sum(JSONArray numbers) {
+        if (numbers == null) {
+            return 0;
+        }
         float total = 0;
         for (Object number : numbers) {
             total += ((Number) number).floatValue();
@@ -48,6 +51,9 @@ public class Statistic {
      * @return
      */
     public static float mean(JSONArray numbers) {
+        if (numbers == null) {
+            return 0;
+        }
         return sum(numbers) / numbers.size();
     }
 
