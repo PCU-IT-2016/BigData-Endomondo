@@ -16,6 +16,8 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import process.utils.Workout;
 
+// NEAREST NEIGHBORS PROCESS USE PYTHON
+
 import java.io.File;
 import java.io.IOException;
 

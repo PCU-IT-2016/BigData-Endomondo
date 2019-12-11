@@ -1,5 +1,5 @@
-{"altitude":5.202418,"distance":1998.7329,"gender":"male","heart_rate":160.142,"id":400181760,"latitude":23.064047,"longitude":112.44975,"speed":0.0,"userId":2934877,"gender_":1,"neighbor_dist":14.7064157219,"for":478585}
-{"altitude":-0.5307739,"distance":316.0407,"gender":"male","heart_rate":152.754,"id":614687157,"latitude":37.87129,"longitude":23.737543,"speed":0.0,"userId":9221677,"gender_":1,"neighbor_dist":19.3179977195,"for":478585}
-{"altitude":31.265608,"distance":988.4123,"gender":"male","heart_rate":139.702,"id":590096025,"latitude":55.51353,"longitude":11.310433,"speed":0.0,"userId":5386323,"gender_":1,"neighbor_dist":25.204512411,"for":478585}
-{"altitude":12.173207,"distance":980.45,"gender":"female","heart_rate":156.704,"id":276475566,"latitude":55.83468,"longitude":11.987694,"speed":0.0,"userId":10344170,"gender_":0,"neighbor_dist":27.5605543569,"for":478585}
-{"altitude":268.2753,"distance":625.04535,"gender":"male","heart_rate":169.992,"id":236222318,"latitude":49.70328,"longitude":21.750439,"speed":0.0,"userId":1063624,"gender_":1,"neighbor_dist":27.6030308835,"for":478585}
+{"altitude":0.5487688917,"distance":0.2172940419,"gender":1.0,"heart_rate":0.5236820084,"latitude":0.7431384222,"longitude":0.448977508,"speed":0.1966804426,"id":"326652339","userId":"5607830","cluster":0}
+{"altitude":0.5296092105,"distance":0.1731350802,"gender":1.0,"heart_rate":0.495958159,"latitude":0.7345557509,"longitude":0.4742329495,"speed":0.1452915933,"id":"592241400","userId":"2358","cluster":0}
+{"altitude":0.5364310032,"distance":0.2168101367,"gender":1.0,"heart_rate":0.4888033473,"latitude":0.744046034,"longitude":0.4495999547,"speed":0.1811220038,"id":"271266743","userId":"4774109","cluster":0}
+{"altitude":0.5393373001,"distance":0.2249665408,"gender":1.0,"heart_rate":0.5781589958,"latitude":0.7596293086,"longitude":0.4497665246,"speed":0.0,"id":"604896976","userId":"6582710","cluster":0}
+{"altitude":0.5313328033,"distance":0.2286319226,"gender":1.0,"heart_rate":0.573665272,"latitude":0.7634422877,"longitude":0.4487395285,"speed":0.0,"id":"624478282","userId":"6582710","cluster":0}
